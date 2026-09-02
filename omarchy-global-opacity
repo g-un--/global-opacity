@@ -1,0 +1,20 @@
+#!/bin/bash
+set -euo pipefail
+
+value="${1:-0.96}"
+case "$value" in
+  0.*|1|1.0|1.00) ;;
+  *) exit 2 ;;
+esac
+
+state_home="${XDG_STATE_HOME:-$HOME/.local/state}"
+mkdir -p "$state_home/omarchy"
+printf '%s\n' "$value" > "$state_home/omarchy/global-opacity"
+
+hyprctl clients -j | jq -r '.[] | select(.mapped == true and .hidden == false and .fullscreen == 0) | .address' |
+while IFS= read -r address; do
+  [ -n "$address" ] || continue
+  hyprctl dispatch "hl.dsp.window.set_prop({ window = \"address:$address\", prop = \"opacity\", value = \"$value override\" })" >/dev/null 2>&1 || true
+done
+
+hyprctl reload >/dev/null 2>&1 || true

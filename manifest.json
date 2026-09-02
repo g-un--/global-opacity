@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "global.opacity",
+  "name": "Global Opacity",
+  "version": "1.0.0",
+  "author": "You",
+  "description": "Adjust opacity for normal windows",
+  "kinds": ["bar-widget"],
+  "entryPoints": { "barWidget": "Widget.qml" },
+  "barWidget": {
+    "displayName": "Global Opacity",
+    "description": "Adjust opacity for normal windows",
+    "category": "Appearance",
+    "defaultSection": "right",
+    "allowMultiple": false
+  }
+}

@@ -1,0 +1,10 @@
+-- Add this to the end of ~/.config/hypr/hyprland.lua.
+local opacity_file = (os.getenv("XDG_STATE_HOME") or (os.getenv("HOME") .. "/.local/state")) .. "/omarchy/global-opacity"
+local opacity_handle = io.open(opacity_file, "r")
+if opacity_handle then
+  local opacity_value = opacity_handle:read("*l")
+  opacity_handle:close()
+  if (opacity_value and opacity_value:match("^0?%.%d+$")) or opacity_value == "1" then
+    o.window({ tag = "default-opacity" }, { opacity = opacity_value .. " override" })
+  end
+end
