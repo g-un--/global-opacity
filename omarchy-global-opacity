@@ -14,10 +14,15 @@ printf '%s\n' "$value" > "$state_home/omarchy/global-opacity"
 # Register the rule for windows opened after this adjustment. Because the
 # widget reapplies the saved value whenever omarchy-shell starts, this needs
 # no persistent edits to the user's Hyprland configuration.
-hyprctl eval "hl.window_rule({ match = { tag = \"default-opacity\" }, opacity = \"$value override\" })" >/dev/null
+hyprctl eval "hl.window_rule({ match = { fullscreen = false }, opacity = \"$value override $value override\" })" >/dev/null
 
 hyprctl clients -j | jq -r '.[] | select(.mapped == true and .hidden == false and .fullscreen == 0) | .address' |
 while IFS= read -r address; do
   [ -n "$address" ] || continue
-  hyprctl dispatch "hl.dsp.window.set_prop({ window = \"address:$address\", prop = \"opacity\", value = \"$value override\" })" >/dev/null 2>&1 || true
+  for prop in opacity opacity_inactive; do
+    hyprctl dispatch "hl.dsp.window.set_prop({ window = \"address:$address\", prop = \"$prop\", value = \"$value\" })" >/dev/null 2>&1 || true
+  done
+  for prop in opacity_override opacity_inactive_override; do
+    hyprctl dispatch "hl.dsp.window.set_prop({ window = \"address:$address\", prop = \"$prop\", value = \"true\" })" >/dev/null 2>&1 || true
+  done
 done
