@@ -7,12 +7,9 @@ user's Hyprland configuration.
 ## Install
 
 ```bash
-omarchy plugin add git@github.com:g-un--/global-opacity.git --enable
+omarchy plugin add https://github.com/g-un--/global-opacity.git --enable
 omarchy bar move global.opacity --after omarchy.weather
 ```
-
-Because this repository is private, the machine must have an SSH key with
-access to the repository before installation.
 
 ## Use
 
