@@ -1,23 +1,36 @@
-# Global Opacity
+# Global Opacity for Omarchy
 
-A private Omarchy bar widget for adjusting window transparency globally.
+A compact Omarchy bar widget for adjusting the opacity of normal windows.
+It is self-contained and does not modify Omarchy's packaged files or the
+user's Hyprland configuration.
 
-The moon icon sits beside the weather widget. Left-click lowers opacity by 5%,
-mouse-wheel adjusts it by 5%, and right-click restores 100% opacity.
-
-## Installed files
-
-- `~/.config/omarchy/plugins/global.opacity/` — widget and manifest
-- `~/.local/bin/omarchy-global-opacity` — Hyprland integration
-- `~/.config/hypr/hyprland.lua` — persistent rule for new windows
-
-To install from this repository:
+## Install
 
 ```bash
-mkdir -p ~/.config/omarchy/plugins/global.opacity ~/.local/bin
-cp Widget.qml manifest.json ~/.config/omarchy/plugins/global.opacity/
-cp omarchy-global-opacity ~/.local/bin/
-chmod +x ~/.local/bin/omarchy-global-opacity
-cp hyprland.lua.snippet /tmp/global-opacity-hyprland.lua.snippet
-omarchy-shell shell rescanPlugins
+omarchy plugin add git@github.com:g-un--/global-opacity.git --enable
+omarchy bar move global.opacity --after omarchy.weather
 ```
+
+Because this repository is private, the machine must have an SSH key with
+access to the repository before installation.
+
+## Use
+
+- Left-click lowers opacity by 5%.
+- Scroll adjusts opacity by 5%.
+- Right-click restores 100% opacity.
+- The selected value is restored when `omarchy-shell` starts.
+
+The minimum opacity is 35%. Fullscreen and hidden windows are not changed.
+
+## Update
+
+```bash
+omarchy plugin update global.opacity
+```
+
+## Requirements
+
+- Omarchy 4 with the Quickshell-based bar
+- Hyprland's Lua configuration parser
+- `jq` (included with Omarchy)

@@ -3,15 +3,15 @@
   "id": "global.opacity",
   "name": "Global Opacity",
   "version": "1.0.0",
-  "author": "You",
-  "description": "Adjust opacity for normal windows",
+  "author": "g-un--",
+  "description": "Adjust global window opacity from the Omarchy bar",
   "kinds": ["bar-widget"],
   "entryPoints": { "barWidget": "Widget.qml" },
   "barWidget": {
     "displayName": "Global Opacity",
-    "description": "Adjust opacity for normal windows",
+    "description": "Adjust global window opacity from the Omarchy bar",
     "category": "Appearance",
-    "defaultSection": "right",
+    "defaultSection": "center",
     "allowMultiple": false
   }
 }

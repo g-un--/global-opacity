@@ -9,8 +9,10 @@ BarWidget {
   moduleName: "global.opacity"
 
   property real windowOpacity: 0.96
+  property bool stateLoaded: false
   readonly property real step: 0.05
   readonly property string statePath: (Quickshell.env("XDG_STATE_HOME") || (Quickshell.env("HOME") + "/.local/state")) + "/omarchy/global-opacity"
+  readonly property string helperPath: decodeURIComponent(String(Qt.resolvedUrl("omarchy-global-opacity")).replace(/^file:\/\//, ""))
 
   implicitWidth: button.implicitWidth
   implicitHeight: button.implicitHeight
@@ -18,19 +20,31 @@ BarWidget {
   function setOpacity(value) {
     var next = Math.max(0.35, Math.min(1.0, Math.round(value * 20) / 20))
     windowOpacity = next
-    if (bar) bar.run("omarchy-global-opacity " + next.toFixed(2))
+    applyOpacity(next)
+  }
+
+  function applyOpacity(value) {
+    Quickshell.execDetached([helperPath, Number(value).toFixed(2)])
   }
 
   function loadOpacity(value) {
     var parsed = parseFloat(String(value || ""))
     if (!isNaN(parsed)) windowOpacity = Math.max(0.35, Math.min(1.0, parsed))
+    stateLoaded = true
+    applyOpacity(windowOpacity)
   }
+
+  onBarChanged: if (bar && stateLoaded) applyOpacity(windowOpacity)
 
   FileView {
     path: root.statePath
     watchChanges: true
     printErrors: false
     onLoaded: root.loadOpacity(text())
+    onLoadFailed: {
+      root.stateLoaded = true
+      root.applyOpacity(root.windowOpacity)
+    }
   }
 
   BarIconButton {
